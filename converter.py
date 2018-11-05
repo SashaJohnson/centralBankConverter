@@ -1,5 +1,16 @@
 
 def convertMoney(convert_from, convert_to, as_of_date, amount):
+
+    '''The user has to provide the following arguments:
+
+           -currency code to convert from (str),
+           -currency code to convert to (str),
+           -date (dd/mm/yyyy)
+           -amount(int)
+
+       The function makes a call to the public API of the Russian Central Bank and returns a converted value'''
+
+
     
     import requests
     from bs4 import BeautifulSoup
@@ -14,9 +25,7 @@ def convertMoney(convert_from, convert_to, as_of_date, amount):
 
     value_from = float(raw_value_from.replace(',', '.'))
     value_to = float(raw_value_to.replace(',', '.'))
-
     
-
     return value_from * amount / value_to
 
 
