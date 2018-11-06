@@ -35,7 +35,7 @@ def convertMoney(convert_from, convert_to, as_of_date, amount):
 
     conn = sqlite3.connect('request_history.db')
     c = conn.cursor()
-    #c.execute("CREATE TABLE rates (source text, target text, date text, amount real)")
+    #c.execute("CREATE TABLE rates (source text, target text, date text, amount integer, total real)")
     c.execute("INSERT INTO request_history VALUES(?,?,?,?,?)",(convert_from, convert_to, as_of_date, amount, answer))
     conn.commit()
     conn.close()
