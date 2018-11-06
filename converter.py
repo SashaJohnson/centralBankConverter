@@ -1,4 +1,3 @@
-
 def convertMoney(convert_from, convert_to, as_of_date, amount):
 
     '''The user has to provide the following arguments:
@@ -15,6 +14,7 @@ def convertMoney(convert_from, convert_to, as_of_date, amount):
        '''
     
     import requests
+    import sqlite3
     from bs4 import BeautifulSoup
 
     base_url = 'http://www.cbr.ru/scripts/XML_daily.asp?date_req='
@@ -28,9 +28,20 @@ def convertMoney(convert_from, convert_to, as_of_date, amount):
     value_from = float(raw_value_from.replace(',', '.'))
     value_to = float(raw_value_to.replace(',', '.'))
 
-    answer = value_from * amount / value_to
-    
-    return round(answer, 2)
+    answer_preliminary = value_from * amount / value_to
+    answer = round(answer_preliminary, 2)
 
+    ###### saving to sqlite3 DB
+
+    conn = sqlite3.connect('request_history.db')
+    c = conn.cursor()
+    #c.execute("CREATE TABLE rates (source text, target text, date text, amount real)")
+    c.execute("INSERT INTO request_history VALUES(?,?,?,?,?)",(convert_from, convert_to, as_of_date, amount, answer))
+    conn.commit()
+    conn.close()
+    
+    ######
+    
+    return answer
 
 
